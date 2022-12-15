@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Modal,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -15,7 +16,9 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [textInput, setTextInput] = useState("");
-  const [inputText, setInputText] = useState(true);
+  const [modalVisible, setModalVisible] = useState(true);
+  const [togaleSubmit, setToggalSubmit] = useState(true);
+  const [isEditItem, setIsEditItem] = useState(null);
 
   useEffect(() => {
     getTodos();
@@ -47,6 +50,18 @@ export default function App() {
   const addTodo = () => {
     if (textInput == "") {
       Alert.alert("Error", "Please input todo");
+    } else if (textInput && !togaleSubmit) {
+      setTodos(
+        todos.map((elem) => {
+          if (elem.id === isEditItem) {
+            return { ...elem, task: textInput };
+          }
+          return elem;
+        })
+      );
+      setToggalSubmit(true);
+      setTextInput("");
+      setIsEditItem(null);
     } else {
       const newTodo = {
         id: Math.random(),
@@ -88,6 +103,29 @@ export default function App() {
 
   const edit = () => {
     console.log("Edit");
+    return (
+      <View style={styles.container}>
+        <Modal
+          animationType="fade"
+          transparent={false}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Model has been Closed");
+            setModalVisible(!modalVisible);
+          }}
+        ></Modal>
+      </View>
+    );
+  };
+
+  const editItem = (id) => {
+    let newEditItem = todos.find((elem) => {
+      return elem.id === id;
+    });
+    console.log(newEditItem);
+    setToggalSubmit(false);
+    setTextInput(newEditItem.task);
+    setIsEditItem(id);
   };
   const ListItem = ({ todo }) => {
     return (
@@ -116,7 +154,7 @@ export default function App() {
             <Icon name="delete" size={20} color="white" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => edit(todo.id)}>
+        <TouchableOpacity onPress={() => editItem(todo.id)}>
           <View style={styles.actionIcon}>
             <Icon name="edit" size={20} color="white" />
           </View>
@@ -146,11 +184,20 @@ export default function App() {
             onChangeText={(text) => setTextInput(text)}
           />
         </View>
-        <TouchableOpacity onPress={addTodo}>
+        {togaleSubmit ? (
           <View style={styles.iconContainer}>
-            <Icon name="add" color="white" size={30} />
+            <Icon name="add" color="white" size={30} onPress={addTodo} />
           </View>
-        </TouchableOpacity>
+        ) : (
+          <View style={styles.actionIcon}>
+            <Icon name="edit" size={20} color="white" onPress={addTodo} />
+          </View>
+        )}
+        {/* <TouchableOpacity onPress={addTodo}>
+          <View style={styles.iconContainer}>
+          <Icon name="add" color="white" size={30} />
+          </View>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );
@@ -166,7 +213,7 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: "white",
-    paddingBottom: 10,
+    paddingTop: 20,
   },
   header: {
     padding: 20,
@@ -192,6 +239,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#1f145c",
   },
+
   footer: {
     position: "absolute",
     bottom: 0,
@@ -253,5 +301,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 100,
     alignItems: "center",
     marginTop: 20,
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00BCD4",
+    height: 300,
+    width: "80%",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
+    marginTop: 80,
+    marginLeft: 40,
   },
 });
