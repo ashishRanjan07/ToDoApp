@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  Modal,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -16,8 +15,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [textInput, setTextInput] = useState("");
-  const [isModelVisible, setIsModelVisible] = useState(false);
-  const [inputText, setInputText] = useState();
+  const [inputText, setInputText] = useState(true);
 
   useEffect(() => {
     getTodos();
@@ -87,16 +85,6 @@ export default function App() {
       },
     ]);
   };
-  const editHandler = () => {
-    console.log("Click on edit Section");
-  };
-  // const renderItem = ({item,index}) => {
-  //   return (
-  //     <TouchableOpacity onPress={}>
-
-  //     </TouchableOpacity>
-  //   )
-  // }
 
   const edit = () => {
     console.log("Edit");
@@ -112,30 +100,6 @@ export default function App() {
               color: "#1f145c",
               textDecorationLine: todo?.completed ? "line-through" : "none",
             }}
-            onPress={editHandler}
-            // <Modal
-            //   animationType="fade"
-            //   visible={isModelVisible}
-            //   onRequestClose={() => setIsModelVisible(false)}
-            // >
-            //   <View style={styles.modelView}>
-            //     <Text style={styles.text}>Change Text</Text>
-            //     <TextInput
-            //       style={styles.textInput}
-            //       onChangeText={(text) => setInputText(text)}
-            //       defaultValue={inputText}
-            //       editable={true}
-            //       multiline={false}
-            //       maxLength={200}
-            //     />
-            //     <TouchableOpacity
-            //       // onPress={() => onPressSaveEdit()}
-            //       style={styles.touchableSave}
-            //     >
-            //       <Text style={styles.text}>Save</Text>
-            //     </TouchableOpacity>
-            //   </View>
-            // </Modal>
           >
             {todo?.task}
           </Text>
@@ -202,6 +166,7 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: "white",
+    paddingBottom: 10,
   },
   header: {
     padding: 20,
