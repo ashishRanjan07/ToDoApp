@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  Modal,
+  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -101,23 +101,6 @@ export default function App() {
     ]);
   };
 
-  const edit = () => {
-    console.log("Edit");
-    return (
-      <View style={styles.container}>
-        <Modal
-          animationType="fade"
-          transparent={false}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Model has been Closed");
-            setModalVisible(!modalVisible);
-          }}
-        ></Modal>
-      </View>
-    );
-  };
-
   const editItem = (id) => {
     let newEditItem = todos.find((elem) => {
       return elem.id === id;
@@ -150,12 +133,12 @@ export default function App() {
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={() => deleteTodo(todo.id)}>
-          <View style={styles.actionIcon}>
+          <View style={[styles.actionIcon, { backgroundColor: "red" }]}>
             <Icon name="delete" size={20} color="white" />
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => editItem(todo.id)}>
-          <View style={styles.actionIcon}>
+          <View style={[styles.actionIcon, { backgroundColor: "#483d8b" }]}>
             <Icon name="edit" size={20} color="white" />
           </View>
         </TouchableOpacity>
@@ -193,11 +176,6 @@ export default function App() {
             <Icon name="edit" size={20} color="white" onPress={addTodo} />
           </View>
         )}
-        {/* <TouchableOpacity onPress={addTodo}>
-          <View style={styles.iconContainer}>
-          <Icon name="add" color="white" size={30} />
-          </View>
-        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );
@@ -232,6 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     elevation: 12,
     borderRadius: 7,
+    backgroundColor: "#dcdcdc",
     marginVertical: 10,
   },
   ListItemText: {
@@ -255,6 +234,9 @@ const styles = StyleSheet.create({
     elevation: 40,
     backgroundColor: "#fff",
     flex: 1,
+    fontSize: 25,
+    color: "green",
+    fontWeight: "bold",
     marginVertical: 20,
     marginRight: 20,
     borderRadius: 30,
