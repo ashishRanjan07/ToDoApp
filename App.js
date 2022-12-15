@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -16,7 +15,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [textInput, setTextInput] = useState("");
-  const [modalVisible, setModalVisible] = useState(true);
   const [togaleSubmit, setToggalSubmit] = useState(true);
   const [isEditItem, setIsEditItem] = useState(null);
 
@@ -239,6 +237,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginVertical: 20,
     marginRight: 20,
+    borderWidth: 2,
+    borderColor: "#000",
+    borderStyle: "dashed",
     borderRadius: 30,
   },
   iconContainer: {
